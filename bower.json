@@ -1,0 +1,17 @@
+{
+  "name": "canvas-desktop",
+  "homepage": "https://github.com/dwnz/shnappy-marketingv2",
+  "authors": [
+    "Daniel Wylie <daniel@danielwylie.me>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
