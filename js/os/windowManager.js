@@ -14,6 +14,13 @@ function WindowManager(kernel) {
         var textEdit = this.requestWindow(400, 400, 200, 500);
         textEdit.title = "Text Edit";
 
+        var openButton = new Button("btn1", "Button", null, 100, 100);
+        openButton.onClick = function (e) {
+            console.log("CLICKED BRO");
+        };
+        textEdit.elements.push(openButton);
+
+
         window.addEventListener('myCLICK', this.onClick);
         window.addEventListener('myMOUSEDOWN', this.onMouseDown);
         window.addEventListener('myMOUSEUP', this.onMouseUp);
@@ -45,8 +52,7 @@ function WindowManager(kernel) {
 
     this.onClick = function (e) {
         var findWindowsInClickZone = self.managedWindows.filter(function (w) {
-            return e.x >= w.x && e.x <= (w.x + w.width)
-                &&
+            return e.x >= w.x && e.x <= (w.x + w.width) &&
                 e.y >= w.y && e.y <= (w.y + w.height)
 
         });
@@ -77,8 +83,7 @@ function WindowManager(kernel) {
 
     this.onMouseDown = function (e) {
         var findWindowsInClickZone = self.managedWindows.filter(function (w) {
-            return e.x >= w.x && e.x <= (w.x + w.width)
-                &&
+            return e.x >= w.x && e.x <= (w.x + w.width) &&
                 e.y >= w.y && e.y <= (w.y + w.height)
 
         }).sort(function (w, w1) {
@@ -92,8 +97,7 @@ function WindowManager(kernel) {
 
     this.onMouseUp = function (e) {
         var findWindowsInClickZone = self.managedWindows.filter(function (w) {
-            return e.x >= w.x && e.x <= (w.x + w.width)
-                &&
+            return e.x >= w.x && e.x <= (w.x + w.width) &&
                 e.y >= w.y && e.y <= (w.y + w.height)
 
         }).sort(function (w, w1) {
@@ -111,8 +115,7 @@ function WindowManager(kernel) {
         }
 
         var findWindowsInClickZone = self.managedWindows.filter(function (w) {
-            return e.x >= w.x && e.x <= (w.x + w.width)
-                &&
+            return e.x >= w.x && e.x <= (w.x + w.width) &&
                 e.y >= w.y && e.y <= (w.y + w.height)
 
         }).sort(function (w, w1) {
@@ -120,6 +123,12 @@ function WindowManager(kernel) {
         });
 
         if (findWindowsInClickZone[0]) {
+            e.realX = e.x;
+            e.realY = e.y;
+
+            e.x = e.x - findWindowsInClickZone[0].x;
+            e.y = e.y - findWindowsInClickZone[0].y;
+
             findWindowsInClickZone[0].onMouseMove(e);
         }
     }
@@ -177,30 +186,53 @@ function MyWindow(manager, x, y, w, h) {
         }
 
         for (var i = 0; i < this.elements.length; i++) {
-            console.log(this.elements[i].position.x, this.elements[i].position.y, this.elements[i].position.width, this.elements[i].position.height);
             self.context.drawImage(this.elements[i].paint(), this.elements[i].position.x, this.elements[i].position.y, this.elements[i].position.width, this.elements[i].position.height);
         }
     };
 
     this.windowClick = function (e) {
-        console.log(this.title, "was clicked");
+        e.realX = e.x;
+        e.realY = e.y;
+
+        e.x = e.x - self.x;
+        e.y = e.y - self.y;
+
+        var findElementsInClickZone = self.elements.filter(function (w) {
+            return e.x >= w.position.x && e.x <= (w.position.x + w.position.width) &&
+                e.y >= w.position.y && e.y <= (w.position.y + w.position.height)
+        });
+
+        if (findElementsInClickZone.length === 1) {
+            findElementsInClickZone[0].onClick(e);
+        }
     };
 
     this.onMouseMove = function (e) {
         if (self.mouseOnTitle) {
-            console.log("Mouse move");
-
             self.displayObject.x = e.x - self.xOffset;
             self.displayObject.y = e.y - self.yOffset;
+
             self.x = e.x - self.xOffset;
             self.y = e.y - self.yOffset;
+        } else {
+            for (var i = 0; i < self.elements.length; i++) {
+                self.elements[i].hover = false;
+            }
+
+            var findElementsInClickZone = self.elements.filter(function (w) {
+                return e.x >= w.position.x && e.x <= (w.position.x + w.position.width) &&
+                    e.y >= w.position.y && e.y <= (w.position.y + w.position.height)
+            });
+
+            for (var i = 0; i < findElementsInClickZone.length; i++) {
+                self.elements[i].hover = true;
+            }
         }
     };
 
     this.onMouseDown = function (e) {
         if (
-            e.x >= self.x && e.x <= (self.x + self.width)
-            &&
+            e.x >= self.x && e.x <= (self.x + self.width) &&
             e.y >= self.y && e.y <= (self.y + 32)
         ) {
             console.log(this.title, "MOUSE DOWN");

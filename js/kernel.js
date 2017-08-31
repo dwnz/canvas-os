@@ -1,9 +1,10 @@
-function Kernel(bios) {
+function Kernel(bios, debug) {
     var self = this;
 
     this.bios = bios;
     this.applications = [];
     this.windowManager = null;
+    this.isDebug = debug;
 
     this.start = function () {
         this.bios.video.writeLine("Starting MyOS...");

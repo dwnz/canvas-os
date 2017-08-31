@@ -33,8 +33,10 @@ basicOutput.writeLine("Setting screen pixel ratio to: " + PIXEL_RATIO);
 
 // Start "BIOS"
 var bios = new BIOS(basicOutput);
+var kernel;
+
 bios.findHardware(function () {
-    var kernel = new Kernel(bios);
+    kernel = new Kernel(bios, true);
     kernel.start();
 });
 

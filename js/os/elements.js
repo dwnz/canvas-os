@@ -14,7 +14,12 @@ function Button(id, text, onClick, x, y) {
         ctx.width = this.position.width;
         ctx.height = this.position.height;
 
-        ctx.fillStyle = "black";
+        if (this.hover) {
+            ctx.fillStyle = "grey";
+        } else {
+            ctx.fillStyle = "black";
+        }
+
         ctx.fillRect(0, 0, this.position.width, this.position.height);
 
         ctx.fillStyle = "white";
