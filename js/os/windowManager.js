@@ -9,17 +9,16 @@ function WindowManager(kernel) {
     this.start = function () {
         var newWindow = this.requestWindow(100, 100, 800, 600);
         newWindow.title = 'Desktop';
-        newWindow.elements.push(new Button("btn1", "Button", null, 100, 100));
+        newWindow.elements.push(new Button("btn1", "Button", 100, 100));
 
         var textEdit = this.requestWindow(400, 400, 200, 500);
         textEdit.title = "Text Edit";
 
-        var openButton = new Button("btn1", "Button", null, 100, 100);
+        var openButton = new Button("btn1", "Button", 100, 100);
         openButton.onClick = function (e) {
             console.log("CLICKED BRO");
         };
         textEdit.elements.push(openButton);
-
 
         window.addEventListener('myCLICK', this.onClick);
         window.addEventListener('myMOUSEDOWN', this.onMouseDown);

@@ -1,10 +1,9 @@
 function Element(id) {
 }
 
-function Button(id, text, onClick, x, y) {
+function Button(id, text, x, y) {
     this.id = id;
     this.text = text;
-    this.onClick = onClick;
     this.position = new Position(x, y, 250, 60);
     this.canvas = null;
 

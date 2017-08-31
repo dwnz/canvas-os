@@ -235,10 +235,9 @@ function DisplayObject(element, x, y, w, h, zindex) {
 };;function Element(id) {
 }
 
-function Button(id, text, onClick, x, y) {
+function Button(id, text, x, y) {
     this.id = id;
     this.text = text;
-    this.onClick = onClick;
     this.position = new Position(x, y, 250, 60);
     this.canvas = null;
 
@@ -283,17 +282,16 @@ function Position(x, y, w, h) {
     this.start = function () {
         var newWindow = this.requestWindow(100, 100, 800, 600);
         newWindow.title = 'Desktop';
-        newWindow.elements.push(new Button("btn1", "Button", null, 100, 100));
+        newWindow.elements.push(new Button("btn1", "Button", 100, 100));
 
         var textEdit = this.requestWindow(400, 400, 200, 500);
         textEdit.title = "Text Edit";
 
-        var openButton = new Button("btn1", "Button", null, 100, 100);
+        var openButton = new Button("btn1", "Button", 100, 100);
         openButton.onClick = function (e) {
             console.log("CLICKED BRO");
         };
         textEdit.elements.push(openButton);
-
 
         window.addEventListener('myCLICK', this.onClick);
         window.addEventListener('myMOUSEDOWN', this.onMouseDown);
